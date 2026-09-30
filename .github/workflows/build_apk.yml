@@ -25,11 +25,14 @@ jobs:
           flutter-version: '3.19.x'
           channel: 'stable'
 
-      - name: Recreate Flutter Android project if needed
+      - name: Rebuild Android workspace
         run: |
-          if [ ! -d "android" ]; then
-            flutter create . --platforms=android --org=com.example
-          fi
+          mkdir temp_app
+          cd temp_app
+          flutter create my_app --org=com.example
+          cp -r my_app/android ../
+          cd ..
+          rm -rf temp_app
 
       - name: Install dependencies
         run: flutter pub get
