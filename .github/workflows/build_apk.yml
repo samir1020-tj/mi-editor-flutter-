@@ -25,14 +25,19 @@ jobs:
           flutter-version: '3.19.x'
           channel: 'stable'
 
-      - name: Rebuild Android workspace
+      - name: Create Flutter Project Structure
         run: |
-          mkdir temp_app
-          cd temp_app
-          flutter create my_app --org=com.example
-          cp -r my_app/android ../
-          cd ..
-          rm -rf temp_app
+          flutter create mi_editor_app --org=com.example
+          rsync -av mi_editor_app/ ./
+          rm -rf mi_editor_app
+
+      - name: Add Dependencies
+        run: |
+          flutter pub add image_picker http
+
+      - name: Restore main.dart if exists
+        run: |
+          git checkout HEAD -- lib/main.dart || true
 
       - name: Install dependencies
         run: flutter pub get
